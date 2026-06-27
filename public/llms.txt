@@ -1,0 +1,12 @@
+# AAA Cars
+
+> Chennai's premium marketplace for hand-picked, inspected, and verified pre-owned cars. Transparent pricing, 200-point inspection, and easy ownership transfer across Tamil Nadu.
+
+AAA Cars is a Chennai-based used-car dealership founded by Afzal Arish A. Every vehicle is professionally inspected, RC and insurance verified, and priced fairly. The site lists current inventory with full specs, images, and contact options.
+
+## Pages
+
+- [Home](/): Featured and newly arrived used cars, value propositions, and sourcing CTA.
+- [Browse Cars](/cars): Full inventory with filters for brand, fuel type, transmission, and price.
+- [About](/about): Story, leadership, and the AAA Cars inspection promise.
+- [Contact](/contact): Phone, WhatsApp, email, and showroom location in Chennai.

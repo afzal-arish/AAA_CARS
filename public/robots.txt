@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://aaa-car-finder.lovable.app/sitemap.xml
