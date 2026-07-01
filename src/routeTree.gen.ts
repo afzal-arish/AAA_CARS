@@ -12,11 +12,11 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as ContactRouteImport } from './routes/contact'
-import { Route as CarsRouteImport } from './routes/cars'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CarsIndexRouteImport } from './routes/cars.index'
 import { Route as CarsIdRouteImport } from './routes/cars.$id'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
@@ -40,11 +40,6 @@ const ContactRoute = ContactRouteImport.update({
   path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CarsRoute = CarsRouteImport.update({
-  id: '/cars',
-  path: '/cars',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
@@ -64,10 +59,15 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CarsIndexRoute = CarsIndexRouteImport.update({
+  id: '/cars/',
+  path: '/cars/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CarsIdRoute = CarsIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => CarsRoute,
+  id: '/cars/$id',
+  path: '/cars/$id',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   id: '/admin',
@@ -108,12 +108,12 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
-  '/cars': typeof CarsRouteWithChildren
   '/contact': typeof ContactRoute
   '/reset-password': typeof ResetPasswordRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/cars/$id': typeof CarsIdRoute
+  '/cars/': typeof CarsIndexRoute
   '/admin/customers': typeof AuthenticatedAdminCustomersRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/admin/cars/new': typeof AuthenticatedAdminCarsNewRoute
@@ -124,11 +124,11 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
-  '/cars': typeof CarsRouteWithChildren
   '/contact': typeof ContactRoute
   '/reset-password': typeof ResetPasswordRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/cars/$id': typeof CarsIdRoute
+  '/cars': typeof CarsIndexRoute
   '/admin/customers': typeof AuthenticatedAdminCustomersRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
   '/admin/cars/new': typeof AuthenticatedAdminCarsNewRoute
@@ -141,12 +141,12 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
-  '/cars': typeof CarsRouteWithChildren
   '/contact': typeof ContactRoute
   '/reset-password': typeof ResetPasswordRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/cars/$id': typeof CarsIdRoute
+  '/cars/': typeof CarsIndexRoute
   '/_authenticated/admin/customers': typeof AuthenticatedAdminCustomersRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/admin/cars/new': typeof AuthenticatedAdminCarsNewRoute
@@ -159,12 +159,12 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/auth'
-    | '/cars'
     | '/contact'
     | '/reset-password'
     | '/sitemap.xml'
     | '/admin'
     | '/cars/$id'
+    | '/cars/'
     | '/admin/customers'
     | '/admin/'
     | '/admin/cars/new'
@@ -175,11 +175,11 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/auth'
-    | '/cars'
     | '/contact'
     | '/reset-password'
     | '/sitemap.xml'
     | '/cars/$id'
+    | '/cars'
     | '/admin/customers'
     | '/admin'
     | '/admin/cars/new'
@@ -191,12 +191,12 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/about'
     | '/auth'
-    | '/cars'
     | '/contact'
     | '/reset-password'
     | '/sitemap.xml'
     | '/_authenticated/admin'
     | '/cars/$id'
+    | '/cars/'
     | '/_authenticated/admin/customers'
     | '/_authenticated/admin/'
     | '/_authenticated/admin/cars/new'
@@ -209,10 +209,11 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
   AuthRoute: typeof AuthRoute
-  CarsRoute: typeof CarsRouteWithChildren
   ContactRoute: typeof ContactRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  CarsIdRoute: typeof CarsIdRoute
+  CarsIndexRoute: typeof CarsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -236,13 +237,6 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/cars': {
-      id: '/cars'
-      path: '/cars'
-      fullPath: '/cars'
-      preLoaderRoute: typeof CarsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -273,12 +267,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/cars/': {
+      id: '/cars/'
+      path: '/cars'
+      fullPath: '/cars/'
+      preLoaderRoute: typeof CarsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/cars/$id': {
       id: '/cars/$id'
-      path: '/$id'
+      path: '/cars/$id'
       fullPath: '/cars/$id'
       preLoaderRoute: typeof CarsIdRouteImport
-      parentRoute: typeof CarsRoute
+      parentRoute: typeof rootRouteImport
     }
     '/_authenticated/admin': {
       id: '/_authenticated/admin'
@@ -355,36 +356,17 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
-interface CarsRouteChildren {
-  CarsIdRoute: typeof CarsIdRoute
-}
-
-const CarsRouteChildren: CarsRouteChildren = {
-  CarsIdRoute: CarsIdRoute,
-}
-
-const CarsRouteWithChildren = CarsRoute._addFileChildren(CarsRouteChildren)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AboutRoute: AboutRoute,
   AuthRoute: AuthRoute,
-  CarsRoute: CarsRouteWithChildren,
   ContactRoute: ContactRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  CarsIdRoute: CarsIdRoute,
+  CarsIndexRoute: CarsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
